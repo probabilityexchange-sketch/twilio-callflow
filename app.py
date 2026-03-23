@@ -50,6 +50,16 @@ def log_to_sheets(caller, action, notes=''):
 
 # --- Routes ---
 
+@app.route('/health')
+def health():
+    """Health check endpoint for monitoring."""
+    return {'status': 'ok', 'service': 'randi-twilio-callflow', 'number': TWILIO_NUMBER}, 200
+
+@app.route('/gather', methods=['GET', 'POST'])
+def gather_alias():
+    """Alias for /voice/handle-key — used by health checks."""
+    return handle_key()
+
 @app.route('/audio/<filename>')
 def serve_audio(filename):
     return send_from_directory(os.path.join(os.path.dirname(__file__), 'audio'), filename)
